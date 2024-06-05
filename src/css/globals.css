@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: rgb(0, 0, 0);
+}
+
+body {
+  background: var(--bg);
+  @apply h-screen flex justify-center items-center;
+}
+
+.canvas {
+  background-image: url("../../public/universe.png");
+  @apply h-[400px] w-[800px] border border-white;
+}
