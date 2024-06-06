@@ -1,77 +1,49 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Asteroid } from "@/Config/Asteroid";
+import { Rocket } from "@/Config/Rocket";
 import { Game } from "@/Config/Game";
 
 export default (props) => {
   const ref = useRef();
-  const asteroides = useRef([]); // Usar useRef para manter a referência dos asteroides
 
-  const imgAsteroid = new Image();
-  imgAsteroid.src = "asteroid.png";
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
 
-  const draw = (ctx) => {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  function handleMouseMove(event) {
+    const canvas = event.target;
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const mouseX = (event.clientX - rect.left) * scaleX;
+    const mouseY = (event.clientY - rect.top) * scaleY;
 
-    for (const asteroide of asteroides.current) {
-      checkCollision(asteroide);
-
-      ctx.beginPath();
-
-      ctx.drawImage(
-        imgAsteroid,
-        asteroide.x,
-        asteroide.y,
-        asteroide.radius.value * 2,
-        asteroide.radius.value * 2
-      );
-
-      asteroide.move();
-
-      ctx.stroke();
-    }
-  };
-
-  function checkCollision(asteroide) {
-    for (const asteroide2 of asteroides.current) {
-      if (asteroide === asteroide2) continue;
-
-      const cateto1 = asteroide.x - asteroide2.x;
-      const cateto2 = asteroide.y - asteroide2.y;
-      const distancia = Math.sqrt(cateto1 * cateto1 + cateto2 * cateto2);
-
-      if (distancia < asteroide.radius.value + asteroide2.radius.value) {
-        const dx = asteroide.x - asteroide2.x;
-        const dy = asteroide.y - asteroide2.y;
-        const angle = Math.atan2(dy, dx);
-
-        // Atualizar a direção do círculo
-        asteroide2.angle = angle + Math.PI;
-        // Atualizar a direção do outro círculo
-        asteroide.angle = angle;
-
-        asteroide.calcMove();
-        asteroide2.calcMove();
-      }
-    }
+    if (mouseX != "undefined" || mouseY != "undefined")
+      setMouse({ x: Math.floor(mouseX), y: Math.floor(mouseY) });
   }
 
   useEffect(() => {
     const canvas = ref.current;
     const context = canvas.getContext("2d");
 
-    for (let i = 0; i < Game.qtnInicial; i++) {}
+    Asteroid.prototype.ctx = context;
+    Rocket.prototype.ctx = context;
+
+    const game = new Game(Rocket);
 
     let animationFrameId;
 
     const render = () => {
-      if (Game.qtnInicial > 0) {
-        asteroides.current.push(new Asteroid(Game.level, canvas));
-        Game.qtnInicial--;
+      if (game.qtnInicial > 0) {
+        game.asteroids.push(new Asteroid(game.difficult));
+        game.qtnInicial--;
       }
-      draw(context);
-      animationFrameId = window.requestAnimationFrame(render);
+
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      game.update();
+
+      if (game.state) animationFrameId = window.requestAnimationFrame(render);
     };
     render();
 
@@ -80,5 +52,5 @@ export default (props) => {
     };
   }, []);
 
-  return <canvas ref={ref} {...props}></canvas>;
+  return <canvas onMouseMove={handleMouseMove} ref={ref} {...props}></canvas>;
 };
