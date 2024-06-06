@@ -1,6 +1,6 @@
 export class Rocket {
   //#region Config Variable
-  constructor() {
+  constructor(difficult) {
     this.size = { width: 50, height: 50 };
 
     this.position = {
@@ -8,9 +8,12 @@ export class Rocket {
       y: this.ctx.canvas.height / 2,
     };
 
+    this.difficult = difficult;
+
     this.speed = 0;
     this.angle = 0;
     this.turnRate = 2;
+    this.isMoving = true;
 
     this.imagem = new Image();
     this.imagem.src = "rocket.png";
@@ -39,7 +42,10 @@ export class Rocket {
       this.speedUpInterval == null &&
       (this.keysPressed["KeyW"] || this.keysPressed["ArrowUp"])
     ) {
-      this.speedUpInterval = setInterval(() => this.adjustSpeed(0.02, 1), 10);
+      this.speedUpInterval = setInterval(
+        () => this.adjustSpeed(0.02, 0.5 + this.difficult / 3),
+        10
+      );
     }
 
     if (
@@ -47,7 +53,7 @@ export class Rocket {
       (this.keysPressed["KeyS"] || this.keysPressed["ArrowDown"])
     ) {
       this.speedDownInterval = setInterval(() => {
-        this.adjustSpeed(-0.02, 1);
+        this.adjustSpeed(-0.02, 0.5 + this.difficult / 3);
       }, 10);
     }
 
@@ -98,6 +104,12 @@ export class Rocket {
 
   adjustSpeed(delta, maxSpeed) {
     this.speed = Math.max(0, Math.min(this.speed + delta, maxSpeed));
+
+    if (this.speed > 0) {
+      this.isMoving = true;
+    } else {
+      this.isMoving = false;
+    }
   }
 
   adjustAngle(delta) {

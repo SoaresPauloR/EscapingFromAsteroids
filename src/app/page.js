@@ -4,12 +4,12 @@ import Canvas from "@/components/Canvas";
 import { useState } from "react";
 
 export default function Home() {
-  const [pontuation, setPontuation] = useState({ stage: 1, score: 0 });
+  const [pontuation, setPontuation] = useState({ level: 1, score: 0 });
 
   return (
     <section className="main">
       <div className="title">
-        <h1>Fugindo de Asteroides</h1>
+        <h1>Escaping from Asteroids</h1>
       </div>
 
       <div className="center">
@@ -36,7 +36,7 @@ export default function Home() {
       </div>
       <div className="foot">
         <div className="potuation">
-          <div className="stage">Stage: {pontuation.stage}</div>
+          <div className="level">Level: {pontuation.level}</div>
           <div className="score">Score: {pontuation.score}</div>
         </div>
         <div className="how-play">

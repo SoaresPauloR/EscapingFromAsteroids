@@ -1,7 +1,7 @@
 export class Asteroid {
   constructor(difficult) {
     // Configuração inicial
-    this.speed = this.calcSpeed() * difficult;
+    this.speed = this.calcSpeed() * difficult * 0.5;
     this.radius = this.calcRadius();
     this.angle = this.calcAngle();
 

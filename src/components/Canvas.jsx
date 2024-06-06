@@ -28,22 +28,46 @@ export default (props) => {
     const canvas = ref.current;
     const context = canvas.getContext("2d");
 
-    let score = 1;
-
-    let time = setInterval((e) => {
-      setPontuation({
-        stage: 1,
-        score: score,
-      });
-      score++;
-    }, 1000);
-
-    let animationFrameId;
-
     Asteroid.prototype.ctx = context;
     Rocket.prototype.ctx = context;
 
     const game = new Game(Rocket);
+    let cont = 10;
+    let contPenalidade = 0;
+    let penalidade = true;
+
+    let time = setInterval((e) => {
+      setPontuation({
+        level: game.level,
+        score: game.score,
+      });
+
+      if (cont == 0) {
+        game.level += 1;
+        cont = 10;
+        game.qtnInicial += 3 * game.difficult;
+        contPenalidade = 0;
+        penalidade = true;
+      } else {
+        cont--;
+      }
+
+      if (!game.rocket.isMoving) {
+        contPenalidade++;
+      } else {
+        contPenalidade = 0;
+      }
+
+      if (contPenalidade > 3 && penalidade) {
+        game.score -= 10;
+        penalidade = false;
+        contPenalidade = 0;
+      }
+
+      game.score++;
+    }, 1000);
+
+    let animationFrameId;
 
     const render = () => {
       if (game.qtnInicial > 0) {

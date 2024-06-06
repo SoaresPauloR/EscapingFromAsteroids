@@ -1,12 +1,14 @@
 export class Game {
   constructor(Rocket) {
     this.level = 1;
+    this.score = 0;
     this.difficult = 1;
-    this.qtnInicial = 30;
+
+    this.qtnInicial = 10 * this.difficult;
     this.state = true;
 
     this.asteroids = [];
-    this.rocket = new Rocket();
+    this.rocket = new Rocket(this.difficult);
   }
 
   update() {
