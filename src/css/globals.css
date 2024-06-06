@@ -8,10 +8,55 @@
 
 body {
   background: var(--bg);
-  @apply h-screen flex justify-center items-center;
+  @apply h-screen flex justify-center items-center text-white;
+}
+
+.main {
+  @apply flex flex-col items-center;
+}
+
+.title {
+  @apply text-center text-3xl font-bold m-4;
+}
+
+.center {
+  @apply flex w-full gap-4;
+}
+
+.objective {
+  @apply text-right w-52;
 }
 
 .canvas {
   background-image: url("../../public/universe.png");
   @apply h-[400px] w-[800px] border border-white;
+}
+
+.rules {
+  @apply w-52;
+}
+
+.foot {
+  @apply flex flex-col text-center w-[800px] items-center;
+}
+
+.potuation {
+  @apply flex justify-between w-full;
+}
+
+.how-play {
+  @apply flex;
+}
+
+.keys {
+  @apply flex flex-col flex-wrap;
+}
+
+.keys > div {
+  @apply flex justify-center;
+}
+
+.key {
+  @apply w-8 h-8 bg-white text-black rounded;
+  box-shadow: -7px -7px 5px rgba(0, 0, 0, 0.4) inset;
 }
