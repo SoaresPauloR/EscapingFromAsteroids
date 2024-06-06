@@ -6,27 +6,19 @@ import { Rocket } from "@/Config/Rocket";
 import { Game } from "@/Config/Game";
 
 export default (props) => {
-  const ref = useRef();
-
+  const prop = { ...props };
   const { setPontuation } = props;
+  delete prop.setPontuation;
 
-  const [mouse, setMouse] = useState({ x: 0, y: 0 });
-
-  function handleMouseMove(event) {
-    const canvas = event.target;
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    const mouseX = (event.clientX - rect.left) * scaleX;
-    const mouseY = (event.clientY - rect.top) * scaleY;
-
-    if (mouseX != "undefined" || mouseY != "undefined")
-      setMouse({ x: Math.floor(mouseX), y: Math.floor(mouseY) });
-  }
+  const ref = useRef();
 
   useEffect(() => {
     const canvas = ref.current;
     const context = canvas.getContext("2d");
+
+    // Adiciona a imagem como uma propriedade estática da classe
+    Asteroid.prototype.img = new Image();
+    Asteroid.prototype.img.src = "asteroid.png";
 
     Asteroid.prototype.ctx = context;
     Rocket.prototype.ctx = context;
@@ -94,5 +86,5 @@ export default (props) => {
     };
   }, []);
 
-  return <canvas onMouseMove={handleMouseMove} ref={ref} {...props}></canvas>;
+  return <canvas ref={ref} {...prop}></canvas>;
 };

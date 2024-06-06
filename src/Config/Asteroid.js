@@ -105,6 +105,3 @@ Asteroid.prototype.draw = function () {
   this.ctx.stroke();
 };
 
-// Adiciona a imagem como uma propriedade estática da classe
-Asteroid.prototype.img = new Image();
-Asteroid.prototype.img.src = "asteroid.png";
