@@ -1,6 +1,11 @@
+"use client";
+
 import Canvas from "@/components/Canvas";
+import { useState } from "react";
 
 export default function Home() {
+  const [pontuation, setPontuation] = useState({ stage: 1, score: 0 });
+
   return (
     <section className="main">
       <div className="title">
@@ -12,7 +17,12 @@ export default function Home() {
           <h3>Objective of the Game:</h3>
           <p>Escape from the asteroids and survive as long as possible.</p>
         </div>
-        <Canvas className="canvas" width={800} height={400}></Canvas>
+        <Canvas
+          className="canvas"
+          width={800}
+          height={400}
+          setPontuation={setPontuation}
+        ></Canvas>
         <div className="rules">
           <h3>Rules:</h3>
           <ul className="list-disc ml-8">
@@ -26,8 +36,8 @@ export default function Home() {
       </div>
       <div className="foot">
         <div className="potuation">
-          <div className="stage">Stage: 1</div>
-          <div className="score">Score: 0</div>
+          <div className="stage">Stage: {pontuation.stage}</div>
+          <div className="score">Score: {pontuation.score}</div>
         </div>
         <div className="how-play">
           <div className="keys">

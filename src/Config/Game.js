@@ -61,5 +61,6 @@ export class Game {
 
   gameOver() {
     this.state = false;
+    alert("Game Over");
   }
 }
